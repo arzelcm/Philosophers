@@ -56,35 +56,18 @@ INC_DIR = inc/
 SRCS_DIR = src/
 INCLUDES = -I$(INC_DIR)
 
-#----LIBFT----#
-LIBFT_DIR = lib/libft/
-LIBFT_LIB = $(LIBFT_DIR)libft.a
-INCLUDES += -I$(LIBFT_DIR)
-
 #----SHARED----#
 SRCS = philo.c
 OBJS = $(SRCS:%.c=$(BIN_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 
-#----MACROS----#
-export GNL_BUFFER_SIZE := 50000
-
-#----VPATH----#
-vpath %.c
-
-#----LOG----#
-LOG = log
-
-
 #----- R U L E S -----#
 
-all:
-	@$(MAKE) --no-print-directory make_libft
-	@$(MAKE) --no-print-directory $(NAME)
+all: $(NAME)
 
-$(NAME): $(LIBFT_LIB) $(OBJS)
+$(NAME): $(OBJS)
 	@printf "$(BLUE)Linking objects and creating program...$(DEF_COLOR)\n"
-	$(CC) $(CCFLAGS) $(DEFINES) $(OBJS) $(LIBFT_LIB) $(LIBS) -o $(NAME)
+	$(CC) $(CCFLAGS) $(DEFINES) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)[✓] $(PINK)$(NAME)$(GREEN) created!!!$(DEF_COLOR)"
 
 $(BIN_DIR)%.o: %.c Makefile
@@ -92,11 +75,11 @@ $(BIN_DIR)%.o: %.c Makefile
 	@mkdir -p $(BIN_DIR)
 	@$(CC) $(CCFLAGS) $(DEFINES) $(INCLUDES) -MMD -c $< -o $@
 
-clean: libft_clean test_clean
+clean:
 	@rm -rf $(BIN_DIR)
 	@echo "$(RED)bin/ deleted$(DEF_COLOR)"
 
-fclean: libft_fclean clean
+fclean: clean
 	@rm -rf $(NAME) log
 	@echo "$(RED)Executable deleted$(DEF_COLOR)\n"
 
@@ -125,9 +108,6 @@ libft_fclean:
 		re \
 		bonus \
 		bonusre \
-		make_libft \
-		libft_clean \
-		libft_fclean \
 		b \
 
 -include $(DEPS)

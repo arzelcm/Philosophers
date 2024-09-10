@@ -57,7 +57,8 @@ SRCS_DIR = src/
 INCLUDES = -I$(INC_DIR)
 
 #----SHARED----#
-SRCS = philo.c
+SRCS =	philo.c \
+		ft_atoi.c
 OBJS = $(SRCS:%.c=$(BIN_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 

@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/10 18:01:16 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:20:31 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include "ft_atoi.h"
 
 void	*philo_live(void *param)
 {
@@ -33,7 +34,7 @@ void	create_philos(int amount)
 		if (pthread_create(&thread, NULL, philo_live, NULL))
 			exit(2);
 		printf("Creating philo\n");
-		pthread_detach(thread);
+		pthread_join(thread, NULL);
 		i++;
 	}
 }
@@ -43,9 +44,9 @@ int	main(int argc, char **argv)
 	(void) argv;
 	if (argc < 5 || argc > 6)
 	{
-		write(2, "Wrong args\n", 11);
+		write(2, "Wrong args!\n", 12);
 		exit(2);
 	}
-	create_philos(atoi(argv[1]));
+	create_philos(ft_atoi(argv[1]));
 	return (1);
 }

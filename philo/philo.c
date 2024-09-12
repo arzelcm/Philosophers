@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/12 19:03:40 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:41:57 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <limits.h>
+#include <string.h>
+#include <sys/time.h>
 #include "ft_atoi.h"
+#include "table.h"
 
 int	correct_args(int argc, char **argv)
 {
@@ -35,35 +38,44 @@ int	correct_args(int argc, char **argv)
 
 void	*philo_live(void *param)
 {
-	(void) param;
-	printf("OKAY\n");
+	t_philo	*philo;
+
+	philo = param;
+	printf("[%i] Philo living(%lu)\neating: %i, thinking: %i, sleeping: %i, color: %s\n\n",
+			philo->index, philo->thread, philo->eating, philo->thinking, philo->sleeping, philo->color);
 	return (NULL);
 }
 
-void	create_philos(int amount)
+t_philo	*create_philos(int amount, t_table *table)
 {
 	int			i;
-	pthread_t	thread;
 
+	gettimeofday(&table->startTime, NULL);
+	table->philos = malloc(sizeof(t_philo) * amount);
+	if (!table->philos)
+		return(NULL);
+	memset(table->philos, 0, sizeof(t_philo) * amount);
 	i = 0;
 	while (i < amount)
 	{
-		if (pthread_create(&thread, NULL, philo_live, NULL))
-			exit(2);
+		table->philos[i].index = i + 1;
+		if (pthread_create(&table->philos[i].thread, NULL, philo_live, table->philos + i))
+			return(NULL);
 		printf("Creating philo\n");
-		pthread_join(thread, NULL);
+		pthread_join(table->philos[i].thread, NULL);
 		i++;
 	}
+	return (table->philos);
 }
 
 int	main(int argc, char **argv)
 {
-	(void) argv;
+	t_table	table;
+
 	if (!correct_args(argc, argv))
-	{
-		write(2, "Wrong args!\n", 12);
-		exit(2);
-	}
-	create_philos(ft_atoi(argv[1]));
-	return (1);
+		return (write(2, "Wrong args!\n", 12), EXIT_FAILURE);
+	create_philos(ft_atoi(argv[1]), &table);
+	if (!table.philos)
+		return (free(table.philos), EXIT_FAILURE);
+	return (free(table.philos), EXIT_SUCCESS);
 }

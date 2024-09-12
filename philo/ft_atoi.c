@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:16:32 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/10 18:19:49 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:03:10 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,25 @@ int	ft_atoi(const char *str)
 	if (is_negative)
 		num *= -1;
 	return (num);
+}
+
+int	ft_isnum(char *str)
+{
+	int				is_num;
+	int				symbols;
+
+	if (!str || !*str)
+		return (0);
+	symbols = 0;
+	while (*str && (*str == '+' || *str == '-') && symbols++ == 0)
+		str++;
+	while (*str && *(str + 1) && *str == '0')
+		str++;
+	is_num = ft_isdigit(*str);
+	while (is_num && *str && symbols <= 1)
+	{
+		is_num = ft_isdigit(*str);
+		str++;
+	}
+	return (is_num);
 }

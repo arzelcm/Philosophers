@@ -68,7 +68,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@printf "$(BLUE)Linking objects and creating program...$(DEF_COLOR)\n"
-	$(CC) $(CCFLAGS) $(DEFINES) $(OBJS) -o $(NAME)
+	$(CC) $(CCFLAGS) $(DEFINES) -lc $(OBJS) -o $(NAME)
 	@echo "$(GREEN)[✓] $(PINK)$(NAME)$(GREEN) created!!!$(DEF_COLOR)"
 
 $(BIN_DIR)%.o: %.c Makefile

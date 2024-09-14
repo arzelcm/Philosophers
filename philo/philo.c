@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/13 14:38:39 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/13 15:54:47 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,22 @@ void	*philo_live(void *param)
 	return (NULL);
 }
 
-void	*create_philos(int amount, t_table *table)
+void	set_colors(char **colors)
 {
-	int			i;
-	char		*colors[COLORS_AMOUNT];	
-
 	colors[0] = RED;
 	colors[1] = GREEN;
 	colors[2] = YELLOW;
 	colors[3] = BLUE;
 	colors[4] = PINK;
 	colors[5] = CYAN;
-	table->colors_amount = 4;
+}
+
+void	*create_philos(int amount, t_table *table)
+{
+	int			i;
+	char		*colors[COLORS_AMOUNT];	
+
+	set_colors(colors);
 	if (gettimeofday(&table->start_time, NULL) != 0)
 		return (table->philos = NULL, NULL);
 	table->philos_amount = amount;

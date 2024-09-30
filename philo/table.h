@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 19:45:15 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/30 18:03:37 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:50:39 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_table
 	int				time_sleep;
 	int				times_eat;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	created;
 	t_timeval		start_time;
 }	t_table;
 

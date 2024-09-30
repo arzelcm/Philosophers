@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/30 18:06:51 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:59:27 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ int	main(int argc, char **argv)
 
 	if (!correct_args(argc, argv))
 		return (write(2, "Wrong args!\n", 12), EXIT_FAILURE);
+	pthread_mutex_init(&table.created, NULL);
+	pthread_mutex_init(&table.mutex, NULL);
+	pthread_mutex_lock(&table.created);
 	create_table(&table, argc, argv);
+	pthread_mutex_unlock(&table.created);
 	if (!table.philos)
 		return (free(table.philos), EXIT_FAILURE);
 	else

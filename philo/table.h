@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 19:45:15 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/30 18:50:39 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:10:46 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ typedef struct s_philo
 {
 	int				index;
 	char			*color;
+	int				dead;
 	int				eaten_times;
 	t_timeval		last_eat;
-	t_timeval		last_think;
-	t_timeval		last_sleep;
 	pthread_t		thread;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	mutex;
@@ -52,7 +51,9 @@ typedef struct s_table
 	int				time_eat;
 	int				time_sleep;
 	int				times_eat;
-	pthread_mutex_t	mutex;
+	int				finished;
+	pthread_mutex_t	log_mutex;
+	pthread_mutex_t	finished_mutex;
 	pthread_mutex_t	created;
 	t_timeval		start_time;
 }	t_table;

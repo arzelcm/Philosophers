@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/09/30 20:17:59 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:17:48 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,34 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void	*philo_live(void *param)
 {
 	t_philo	*philo;
+	int		finished;
+	int		(*functs[3])(t_philo *);
+	int		i;
 
+	functs[0] = p_eat;
+	functs[1] = p_sleep;
+	functs[2] = p_think;
+	finished = 0;
 	philo = (t_philo *) param;
-	pthread_mutex_lock(&(philo->table->mutex));
-	printf("%s%lu %i has taken a seat\n"DEF_COLOR,
-		philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->mutex));
 	pthread_mutex_lock(&(philo->table->created));
 	pthread_mutex_unlock(&(philo->table->created));
-	if (philo->index % 2)
-		p_eat(philo);
-	else
-		p_sleep(philo);
+	i = philo->index % 2 == 0;
+	while (!finished)
+	{
+		if (!functs[i](philo))
+			return (philo->table->philos = NULL, NULL);
+		pthread_mutex_lock(&philo->table->finished_mutex);
+		finished = philo->table->finished;
+		pthread_mutex_unlock(&philo->table->finished_mutex);
+		i++;
+		if (i == 3)
+			i = 0;
+	}
 	return (NULL);
 }
 
@@ -51,8 +63,12 @@ int	init_forks(t_table *table)
 
 	i = -1;
 	while (++i <= table->philos_amount)
+	{
 		if (pthread_mutex_init(&(table->philos + i)->fork, NULL) != 0)
 			return (0);
+		if (pthread_mutex_init(&(table->philos + i)->mutex, NULL) != 0)
+			return (0);
+	}
 	return (1);
 }
 
@@ -67,6 +83,7 @@ t_philo	*create_philos(t_table *table, char	**colors)
 	i = 0;
 	table->philos[table->philos_amount - 1].next = table->philos;
 	table->philos[0].prev = table->philos + table->philos_amount - 1;
+	gettimeofday(&table->start_time, NULL);
 	while (i < table->philos_amount)
 	{
 		if (i + 1 < table->philos_amount)
@@ -90,8 +107,7 @@ void	*create_table(t_table *table, int argc, char **argv)
 	char		*colors[COLORS_AMOUNT];
 
 	set_colors(colors);
-	if (gettimeofday(&table->start_time, NULL) != 0)
-		return (table->philos = NULL, NULL);
+	table->finished = 0;
 	table->philos_amount = ft_atoi(argv[1]);
 	table->time_death = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);

@@ -6,14 +6,25 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 12:38:51 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:49:11 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "ft_atoi.h"
 #include "table.h"
+#include "utils.h"
+
+void	print_vital(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&(philo->table->log_mutex));
+	printf("%s%lu %i %s\n"DEF_COLOR,
+		philo->color, get_time_now(philo->table->start_time),
+		philo->index, msg);
+	pthread_mutex_unlock(&(philo->table->log_mutex));
+}
 
 int	correct_args(int argc, char **argv)
 {
@@ -42,7 +53,8 @@ void	join_threads(t_table *table)
 
 int	main(int argc, char **argv)
 {
-	t_table	table;
+	t_table		table;
+	pthread_t	monitor;
 
 	if (!correct_args(argc, argv))
 		return (write(2, "Wrong args!\n", 12), EXIT_FAILURE);
@@ -51,10 +63,12 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&table.finished_mutex, NULL);
 	pthread_mutex_lock(&table.created);
 	create_table(&table, argc, argv);
+	gettimeofday(&table.start_time, NULL);
 	pthread_mutex_unlock(&table.created);
 	if (!table.philos)
 		return (free(table.philos), EXIT_FAILURE);
-	else
-		join_threads(&table);
+	pthread_create(&monitor, NULL, check_table_status, &table);
+	pthread_join(monitor, NULL);
+	join_threads(&table);
 	return (free(table.philos), EXIT_SUCCESS);
 }

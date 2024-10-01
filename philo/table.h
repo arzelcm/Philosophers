@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 19:45:15 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 13:10:46 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:48:49 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,11 @@ typedef struct s_table
 }	t_table;
 
 void	*create_table(t_table *table, int argc, char **argv);
+
+void	*check_table_status(void *param);
+
+int		simulation_finished(t_table *table);
+
+void	print_vital(t_philo *philo, char *msg);
 
 #endif

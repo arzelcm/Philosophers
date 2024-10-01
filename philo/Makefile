@@ -60,7 +60,9 @@ INCLUDES = -I$(INC_DIR)
 SRCS =	philo.c \
 		ft_atoi.c \
         table.c \
-        utils.c
+        utils.c \
+        fork.c \
+        table_helper.c
 OBJS = $(SRCS:%.c=$(BIN_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 

@@ -6,11 +6,11 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 18:00:59 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 15:11:15 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:02:06 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "table.h"
+#include "philo.h"
 #include <sys/time.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -42,58 +42,37 @@ long	get_time_now(struct timeval start)
 		- ((start.tv_sec * 1000) + (start.tv_usec / 1000)));
 }
 
-// TODO: If finished don't eat!!
 int	p_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork);
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	printf("%s%lu %i has taken a fork\n"DEF_COLOR,
-		philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
-	pthread_mutex_lock(&philo->prev->fork);
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	printf("%s%lu %i has taken a fork\n"DEF_COLOR,
-		philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	printf("%s%lu %i is eating\n"DEF_COLOR,
-		philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
-	philo->eaten_times++;
-	gettimeofday(&philo->last_eat, NULL);
-	suspend(philo->table->time_eat);
-	pthread_mutex_unlock(&philo->prev->fork);
-	pthread_mutex_unlock(&philo->fork);
+	int	holded_forks;
+
+	holded_forks = hold_forks(philo);
+	if (!simulation_finished(philo->table))
+	{
+		print_vital(philo, "is eating");
+		pthread_mutex_lock(&philo->mutex);
+		philo->eaten_times++;
+		gettimeofday(&philo->last_eat, NULL);
+		pthread_mutex_unlock(&philo->mutex);
+		suspend(philo->table->time_eat);
+	}
+	if (holded_forks >= 1)
+		pthread_mutex_unlock(&philo->fork);
+	if (holded_forks == 2)
+		pthread_mutex_unlock(&philo->prev->fork);
 	return (1);
 }
 
 int	p_sleep(t_philo *philo)
 {
-	int	finished;
-
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	pthread_mutex_lock(&philo->table->finished_mutex);
-	finished = philo->table->finished;
-	pthread_mutex_unlock(&philo->table->finished_mutex);
-	if (!finished)
-		printf("%s%lu %i is sleeping\n"DEF_COLOR,
-			philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
+	print_vital(philo, "is sleeping");
 	suspend(philo->table->time_sleep);
 	return (1);
 }
 
 int	p_think(t_philo *philo)
 {
-	int	finished;
-
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	pthread_mutex_lock(&philo->table->finished_mutex);
-	finished = philo->table->finished;
-	pthread_mutex_unlock(&philo->table->finished_mutex);
-	if (!finished)
-		printf("%s%lu %i is thinking\n"DEF_COLOR,
-			philo->color, get_time_now(philo->table->start_time), philo->index);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
+	if (!simulation_finished(philo->table))
+		print_vital(philo, "is thinking");
 	return (1);
 }

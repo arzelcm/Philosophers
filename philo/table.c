@@ -6,11 +6,12 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 13:17:48 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:40:09 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "table.h"
+#include "philo.h"
 #include "ft_atoi.h"
 #include "utils.h"
 #include <string.h>
@@ -35,14 +36,10 @@ void	*philo_live(void *param)
 	i = philo->index % 2 == 0;
 	while (!finished)
 	{
-		if (!functs[i](philo))
+		if (!functs[i % 3](philo))
 			return (philo->table->philos = NULL, NULL);
-		pthread_mutex_lock(&philo->table->finished_mutex);
-		finished = philo->table->finished;
-		pthread_mutex_unlock(&philo->table->finished_mutex);
+		finished = simulation_finished(philo->table);
 		i++;
-		if (i == 3)
-			i = 0;
 	}
 	return (NULL);
 }
@@ -57,21 +54,6 @@ void	set_colors(char **colors)
 	colors[5] = CYAN;
 }
 
-int	init_forks(t_table *table)
-{
-	int	i;
-
-	i = -1;
-	while (++i <= table->philos_amount)
-	{
-		if (pthread_mutex_init(&(table->philos + i)->fork, NULL) != 0)
-			return (0);
-		if (pthread_mutex_init(&(table->philos + i)->mutex, NULL) != 0)
-			return (0);
-	}
-	return (1);
-}
-
 t_philo	*create_philos(t_table *table, char	**colors)
 {
 	int			i;
@@ -83,9 +65,9 @@ t_philo	*create_philos(t_table *table, char	**colors)
 	i = 0;
 	table->philos[table->philos_amount - 1].next = table->philos;
 	table->philos[0].prev = table->philos + table->philos_amount - 1;
-	gettimeofday(&table->start_time, NULL);
 	while (i < table->philos_amount)
 	{
+		table->philos[i].last_eat = table->start_time;
 		if (i + 1 < table->philos_amount)
 		{
 			table->philos[i].next = table->philos + i + 1;
@@ -120,4 +102,33 @@ void	*create_table(t_table *table, int argc, char **argv)
 		return (table->philos = NULL, NULL);
 	else
 		return (table->philos);
+}
+
+void	*check_table_status(void *param)
+{
+	t_table	*table;
+	int		finished;
+	int		i;
+
+	table = (t_table *) param;
+	finished = 0;
+	while (!finished)
+	{
+		i = 0;
+		while (i < table->philos_amount && !finished)
+		{
+			pthread_mutex_lock(&table->philos[i].mutex);
+			finished = get_time_now(table->philos[i].last_eat) >= table->time_death;
+			pthread_mutex_unlock(&table->philos[i].mutex);
+			i++;	
+		}
+	}
+	pthread_mutex_lock(&table->log_mutex);
+	printf("%s%lu %i is dead\n"DEF_COLOR,
+		table->philos[i - 1].color, get_time_now(table->start_time), table->philos[i - 1].index);
+	pthread_mutex_unlock(&table->log_mutex);
+	pthread_mutex_lock(&table->finished_mutex);
+	table->finished = 1;
+	pthread_mutex_unlock(&table->finished_mutex);
+	return (NULL);
 }

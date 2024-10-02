@@ -2,4 +2,6 @@ bin
 philo
 !philo/
 
+log
+
 .vscode

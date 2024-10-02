@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 17:49:11 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:26:06 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,7 @@
 #include <stdio.h>
 #include "ft_atoi.h"
 #include "table.h"
-#include "utils.h"
-
-void	print_vital(t_philo *philo, char *msg)
-{
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	printf("%s%lu %i %s\n"DEF_COLOR,
-		philo->color, get_time_now(philo->table->start_time),
-		philo->index, msg);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
-}
+#include "vitals.h"
 
 int	correct_args(int argc, char **argv)
 {
@@ -67,7 +58,7 @@ int	main(int argc, char **argv)
 	pthread_mutex_unlock(&table.created);
 	if (!table.philos)
 		return (free(table.philos), EXIT_FAILURE);
-	pthread_create(&monitor, NULL, check_table_status, &table);
+	pthread_create(&monitor, NULL, check_simulation_routine, &table);
 	pthread_join(monitor, NULL);
 	join_threads(&table);
 	return (free(table.philos), EXIT_SUCCESS);

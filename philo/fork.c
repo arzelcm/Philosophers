@@ -6,24 +6,26 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/01 18:01:06 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 12:50:39 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils.h"
-#include "stdio.h"
+#include "vitals.h"
+#include "simulation.h"
+#include <stdio.h>
 
 int	hold_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->fork);
 	if (simulation_finished(philo->table))
 		return (1);
-	print_vital(philo, "has taken a fork");
+	print_vital(philo, "has taken a fork", CYAN);
 	pthread_mutex_lock(&philo->prev->fork);
 	if (simulation_finished(philo->table))
 		return (2);
-	print_vital(philo, "has taken a fork");
+	print_vital(philo, "has taken a fork", CYAN);
 	return (2);
 }
 

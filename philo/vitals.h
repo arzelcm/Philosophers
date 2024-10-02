@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   vitals.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 18:02:34 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:23:58 by arcanava         ###   ########.fr       */
+/*   Created: 2024/10/02 12:14:29 by arcanava          #+#    #+#             */
+/*   Updated: 2024/10/02 12:46:09 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#ifndef VITALS_H
+# define VITALS_H
 
-long	get_time_now(struct timeval start);
+# define VITALS_AMOUNT 3
 
-void	suspend(int time, t_table *table);
+# include "philo.h"
 
-long	get_time_now(struct timeval start);
+int		p_eat(t_philo *philo);
+
+int		p_sleep(t_philo *philo);
+
+int		p_think(t_philo *philo);
+
+void	print_vital(t_philo *philo, char *msg, char *color);
 
 #endif

@@ -1,7 +1,7 @@
 NAME = philo
 
 #----COLORS----#
-DEF_COLOR = \033[0m
+RESET_COLOR = \033[0m
 WHITE_BOLD = \033[1;39m
 BLACK = \033[1;30m
 RED = \033[1;31m
@@ -62,7 +62,8 @@ SRCS =	philo.c \
         table.c \
         utils.c \
         fork.c \
-        table_helper.c
+        simulation.c \
+        vitals.c
 OBJS = $(SRCS:%.c=$(BIN_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
 
@@ -71,22 +72,22 @@ DEPS = $(OBJS:%.o=%.d)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@printf "$(BLUE)Linking objects and creating program...$(DEF_COLOR)\n"
+	@printf "$(BLUE)Linking objects and creating program...$(RESET_COLOR)\n"
 	$(CC) $(CCFLAGS) $(DEFINES) -lc $(OBJS) -o $(NAME)
-	@echo "$(GREEN)[✓] $(PINK)$(NAME)$(GREEN) created!!!$(DEF_COLOR)"
+	@echo "$(GREEN)[✓] $(PINK)$(NAME)$(GREEN) created!!!$(RESET_COLOR)"
 
 $(BIN_DIR)%.o: %.c Makefile
-	@printf "$(CYAN)Compiling: $(PINK)$(notdir $<)...$(DEF_COLOR)\n"
+	@printf "$(CYAN)Compiling: $(PINK)$(notdir $<)...$(RESET_COLOR)\n"
 	@mkdir -p $(BIN_DIR)
 	@$(CC) $(CCFLAGS) $(DEFINES) $(INCLUDES) -MMD -c $< -o $@
 
 clean:
 	@rm -rf $(BIN_DIR)
-	@echo "$(RED)bin/ deleted$(DEF_COLOR)"
+	@echo "$(RED)bin/ deleted$(RESET_COLOR)"
 
 fclean: clean
 	@rm -rf $(NAME) log
-	@echo "$(RED)Executable deleted$(DEF_COLOR)\n"
+	@echo "$(RED)Executable deleted$(RESET_COLOR)\n"
 
 re: fclean all
 
@@ -104,7 +105,7 @@ libft_clean:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
 
 libft_fclean:
-	@echo "$(RED)Cleaning $(PINK)Libft$(RED)...$(DEF_COLOR)"
+	@echo "$(RED)Cleaning $(PINK)Libft$(RED)...$(RESET_COLOR)"
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 
 .PHONY: all \

@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:13:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:24:43 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:28:31 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,17 @@ int	p_think(t_philo *philo)
 	return (1);
 }
 
-void	print_vital(t_philo *philo, char *msg, char *color)
+void	print_vital_message(t_philo *philo, char *msg, char *color)
 {
-	pthread_mutex_lock(&(philo->table->log_mutex));
 	printf("%s[%lu] %s%i%s %s\n"RESET_COLOR,
 		color, get_time_now(philo->table->start_time),
 		philo->color, philo->index, color, msg);
+}
+
+void	print_vital(t_philo *philo, char *msg, char *color)
+{
+	pthread_mutex_lock(&(philo->table->log_mutex));
+	if (!simulation_finished(philo->table))
+		print_vital_message(philo, msg, color);
 	pthread_mutex_unlock(&(philo->table->log_mutex));
 }

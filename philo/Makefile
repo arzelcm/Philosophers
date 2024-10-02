@@ -11,10 +11,6 @@ BLUE = \033[1;34m
 PINK = \033[1;35m
 CYAN = \033[1;36m
 
-#----COMPILER----#
-CC = cc
-CCFLAGS = -Wall -Werror -Wextra -g -O1 -fsanitize=thread#-fsanitize=address# -O3
-
 #----OS COMPATIBILITY----#
 ifeq ($(OS),Windows_NT)
     CCFLAGS += -D WIN32
@@ -49,6 +45,10 @@ else
         CCFLAGS += -D ARM
     endif
 endif
+
+#----COMPILER----#
+CC = cc
+CCFLAGS = -Wall -Werror -Wextra -O1 #-g -fsanitize=address
 
 #----DIRS----#
 BIN_DIR = bin/

@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:14:29 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 12:46:09 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:28:38 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ int		p_sleep(t_philo *philo);
 int		p_think(t_philo *philo);
 
 void	print_vital(t_philo *philo, char *msg, char *color);
+
+void	print_vital_message(t_philo *philo, char *msg, char *color);
 
 #endif

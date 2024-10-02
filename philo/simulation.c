@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 14:17:29 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:27:43 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ void	*check_simulation_routine(void *param)
 			i++;
 		}
 	}
-	print_vital(&table->philos[i - 1], "is dead", RED);
 	pthread_mutex_lock(&table->finished_mutex);
 	table->finished = 1;
 	pthread_mutex_unlock(&table->finished_mutex);
+	pthread_mutex_lock(&table->log_mutex);
+	print_vital_message(&table->philos[i - 1], "is dead", RED);
+	pthread_mutex_unlock(&table->log_mutex);
 	return (NULL);
 }

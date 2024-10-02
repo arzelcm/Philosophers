@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:29:48 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:15:56 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	simulation_finished(t_table *table)
 	pthread_mutex_lock(&table->finished_mutex);
 	finished = table->finished;
 	pthread_mutex_unlock(&table->finished_mutex);
+	// printf("Finished: %i\n\n", finished);
 	return (finished);
 }
 
@@ -56,9 +57,7 @@ void	*check_simulation_routine(void *param)
 			i++;
 		}
 	}
-	pthread_mutex_lock(&table->log_mutex);
 	print_vital(&table->philos[i - 1], "is dead", RED);
-	pthread_mutex_unlock(&table->log_mutex);
 	pthread_mutex_lock(&table->finished_mutex);
 	table->finished = 1;
 	pthread_mutex_unlock(&table->finished_mutex);

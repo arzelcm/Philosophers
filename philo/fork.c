@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:33:36 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:17:18 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	hold_forks(t_philo *philo)
 			return (2);
 		print_vital(philo, "has taken a fork", CYAN);
 		return (2);
-	} else 
+	}
+	else
 	{
 		pthread_mutex_lock(&philo->prev->fork);
 		if (simulation_finished(philo->table))

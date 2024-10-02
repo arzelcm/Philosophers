@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 14:15:56 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/02 14:17:29 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	simulation_finished(t_table *table)
 	pthread_mutex_lock(&table->finished_mutex);
 	finished = table->finished;
 	pthread_mutex_unlock(&table->finished_mutex);
-	// printf("Finished: %i\n\n", finished);
 	return (finished);
 }
 

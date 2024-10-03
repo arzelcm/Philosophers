@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:13:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 15:57:05 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:31:06 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	p_eat(t_philo *philo)
 	int	holded_forks;
 
 	holded_forks = hold_forks(philo);
-	if (!simulation_finished(philo->table))
+	if (holded_forks == 2 && !simulation_finished(philo->table))
 	{
 		print_vital(philo, "is eating", BLUE);
 		pthread_mutex_lock(&philo->mutex);

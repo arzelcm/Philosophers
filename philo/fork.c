@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 15:51:34 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:52:40 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,34 @@
 #include "vitals.h"
 #include "simulation.h"
 
+#include "utils.h"
+
+static int	hold_fork(t_philo *philo, pthread_mutex_t *fork)
+{
+	pthread_mutex_lock(fork);
+	if (simulation_finished(philo->table))
+		return (0);
+	print_vital(philo, "has taken a fork", CYAN);
+	return (1);
+}
+
 int	hold_forks(t_philo *philo)
 {
+	pthread_mutex_t	*forks[2];
+
+	forks[0] = &philo->prev->fork;
+	forks[1] = &philo->fork;
 	if (philo->index % 2 != 0)
 	{
-		pthread_mutex_lock(&philo->fork);
-		if (simulation_finished(philo->table))
-			return (1);
-		print_vital(philo, "has taken a fork", CYAN);
-		pthread_mutex_lock(&philo->prev->fork);
-		if (simulation_finished(philo->table))
-			return (2);
-		print_vital(philo, "has taken a fork", CYAN);
-		return (2);
+		forks[0] = &philo->fork;
+		forks[1] = &philo->prev->fork;
 	}
-	else
-	{
-		pthread_mutex_lock(&philo->prev->fork);
-		if (simulation_finished(philo->table))
-			return (1);
-		print_vital(philo, "has taken a fork", CYAN);
-		pthread_mutex_lock(&philo->fork);
-		if (simulation_finished(philo->table))
-			return (2);
-		print_vital(philo, "has taken a fork", CYAN);
-		return (2);
-	}
+	if (!hold_fork(philo, forks[0]))
+		return (1);
+	else if (forks[0] == forks[1])
+		return (suspend(philo->table->time_death, philo->table), 1);
+	hold_fork(philo, forks[1]);
+	return (2);
 }
 
 int	init_forks(t_table *table)

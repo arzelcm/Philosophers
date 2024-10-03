@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 15:50:03 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:15:57 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,19 @@ void	monitor_finish(t_table *table, int *i, int *philos_finished)
 {
 	int	finished;
 
-	finished = 0;
+	finished = simulation_finished(table);
 	while (!finished)
 	{
 		*i = 0;
 		*philos_finished = 0;
 		while (*i < table->philos_amount && !finished)
 		{
-			pthread_mutex_lock(&table->philos[*i].mutex);
+			pthread_mutex_lock(&(table->philos[*i].mutex));
 			finished = get_time_now(table->philos[*i].last_eat)
 				>= table->time_death;
 			*philos_finished += table->philos[*i].eaten_times
 				== table->times_eat;
-			pthread_mutex_unlock(&table->philos[*i].mutex);
+			pthread_mutex_unlock(&(table->philos[*i].mutex));
 			(*i)++;
 		}
 		finished |= table->times_eat > 0
@@ -67,13 +67,16 @@ void	*check_simulation_routine(void *param)
 	int		i;
 
 	table = (t_table *) param;
+	if (table->philos_amount == 0)
+		return (NULL);
 	monitor_finish(table, &i, &philos_finished);
 	pthread_mutex_lock(&table->finished_mutex);
 	table->finished = 1;
 	pthread_mutex_unlock(&table->finished_mutex);
-	if (philos_finished != table->philos_amount)
+	printf("\n");
+	if (table->philos_amount == 1 || philos_finished != table->philos_amount)
 		print_vital_message(&table->philos[i - 1], "is dead", RED);
 	else
-		printf(GREEN"\nEveryone finished eating. Cheers!\n"RESET_COLOR);
+		printf(GREEN"Everyone finished eating. Cheers!\n"RESET_COLOR);
 	return (NULL);
 }

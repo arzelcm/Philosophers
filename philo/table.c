@@ -6,10 +6,9 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 15:55:27 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:47:34 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "philo.h"
 #include "ft_atoi.h"
@@ -31,7 +30,7 @@ t_philo	*create_philos(t_table *table, char	**colors)
 	i = -1;
 	while (++i < table->philos_amount)
 	{
-		table->philos[i].last_eat = table->start_time;
+		gettimeofday(&table->philos[i].last_eat, NULL);
 		if (i + 1 < table->philos_amount)
 		{
 			table->philos[i].next = table->philos + i + 1;
@@ -52,16 +51,15 @@ void	*create_table(t_table *table, int argc, char **argv)
 	char		*colors[COLORS_AMOUNT];
 
 	set_colors(colors);
-	table->finished = 0;
 	table->philos_amount = ft_atoi(argv[1]);
 	table->time_death = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
+	table->times_eat = 0;
 	if (argc > 5)
 		table->times_eat = ft_atoi(argv[5]);
-	else
-		table->times_eat = 0;
-	if (!create_philos(table, colors))
+	table->finished = table->philos_amount <= 0;
+	if (table->finished || !create_philos(table, colors))
 		return (table->philos = NULL, NULL);
 	else
 		return (table->philos);

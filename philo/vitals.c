@@ -6,15 +6,29 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:13:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 14:28:31 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:57:05 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vitals.h"
-#include "philo.h"
 #include "utils.h"
 #include "simulation.h"
 #include <stdio.h>
+
+void	print_vital_message(t_philo *philo, char *msg, char *color)
+{
+	printf("%s[%lu] %s%i%s %s\n"RESET_COLOR,
+		color, get_time_now(philo->table->start_time),
+		philo->color, philo->index, color, msg);
+}
+
+void	print_vital(t_philo *philo, char *msg, char *color)
+{
+	pthread_mutex_lock(&(philo->table->log_mutex));
+	if (!simulation_finished(philo->table))
+		print_vital_message(philo, msg, color);
+	pthread_mutex_unlock(&(philo->table->log_mutex));
+}
 
 int	p_eat(t_philo *philo)
 {
@@ -49,19 +63,4 @@ int	p_think(t_philo *philo)
 	if (!simulation_finished(philo->table))
 		print_vital(philo, "is thinking", YELLOW);
 	return (1);
-}
-
-void	print_vital_message(t_philo *philo, char *msg, char *color)
-{
-	printf("%s[%lu] %s%i%s %s\n"RESET_COLOR,
-		color, get_time_now(philo->table->start_time),
-		philo->color, philo->index, color, msg);
-}
-
-void	print_vital(t_philo *philo, char *msg, char *color)
-{
-	pthread_mutex_lock(&(philo->table->log_mutex));
-	if (!simulation_finished(philo->table))
-		print_vital_message(philo, msg, color);
-	pthread_mutex_unlock(&(philo->table->log_mutex));
 }

@@ -6,15 +6,13 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:26:06 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:54:03 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "ft_atoi.h"
-#include "table.h"
 #include "vitals.h"
 
 int	correct_args(int argc, char **argv)

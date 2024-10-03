@@ -6,19 +6,17 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:26:36 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:55:27 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "table.h"
+
 #include "philo.h"
 #include "ft_atoi.h"
-#include "utils.h"
 #include "simulation.h"
 #include "vitals.h"
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 t_philo	*create_philos(t_table *table, char	**colors)
 {

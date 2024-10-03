@@ -6,14 +6,12 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 18:00:59 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:23:52 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:56:10 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "simulation.h"
-#include <sys/time.h>
-#include <stdio.h>
 #include <unistd.h>
 
 int	get_time(void)

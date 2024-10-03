@@ -6,13 +6,12 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:14:29 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 14:28:38 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:57:20 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VITALS_H
 # define VITALS_H
-
 # define VITALS_AMOUNT 3
 
 # include "philo.h"

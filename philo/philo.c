@@ -6,13 +6,14 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 12:04:06 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:06:44 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_atoi.h"
 #include "vitals.h"
 #include "simulation.h"
+#include "utils.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -50,16 +51,6 @@ static void	init_mutexs(t_table *table)
 	pthread_mutex_init(&table->finished_mutex, NULL);
 }
 
-static int	printwtf()
-{
-	int	written;
-
-	written = write(STDERR_FILENO, PINK"Whaat ?!\n"RESET_COLOR,
-		PINK_STR_LEN + 9 + RESET_COLOR_STR_LEN);
-	(void) written;
-	return (EXIT_FAILURE);
-}
-
 void	set_starting_time(t_table *table)
 {
 	int	i;
@@ -79,7 +70,7 @@ int	main(int argc, char **argv)
 	if (!correct_args(argc, argv))
 	{
 		written = write(STDERR_FILENO, RED"Wrong args!\n"RESET_COLOR,
-			12 + RED_STR_LEN + RESET_COLOR_STR_LEN);
+				12 + RED_STR_LEN + RESET_COLOR_STR_LEN);
 		(void) written;
 		return (EXIT_FAILURE);
 	}

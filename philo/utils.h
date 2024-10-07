@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 18:02:34 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:23:58 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:05:01 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@ long	get_time_now(struct timeval start);
 void	suspend(int time, t_table *table);
 
 long	get_time_now(struct timeval start);
+
+int		printwtf(void);
 
 #endif

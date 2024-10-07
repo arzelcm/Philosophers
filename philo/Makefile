@@ -48,7 +48,7 @@ endif
 
 #----COMPILER----#
 CC = cc
-CCFLAGS = -Wall -Werror -Wextra -O1 #-g -fsanitize=address
+CCFLAGS = -Wall -Werror -Wextra #-O1 #-g -fsanitize=address
 
 #----DIRS----#
 BIN_DIR = bin/

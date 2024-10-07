@@ -6,12 +6,13 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 17:49:37 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/05 13:31:32 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_atoi.h"
 #include "vitals.h"
+#include "simulation.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -49,6 +50,16 @@ static void	init_mutexs(t_table *table)
 	pthread_mutex_init(&table->finished_mutex, NULL);
 }
 
+static int	printwtf()
+{
+	int	written;
+
+	written = write(STDERR_FILENO, PINK"Whaat ?\n"RESET_COLOR,
+		PINK_STR_LEN + 9 + RESET_COLOR_STR_LEN);
+	(void) written;
+	return (EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv)
 {
 	t_table		table;
@@ -57,13 +68,16 @@ int	main(int argc, char **argv)
 
 	if (!correct_args(argc, argv))
 	{
-		written = write(2, "Wrong args!\n", 12);
+		written = write(STDERR_FILENO, RED"Wrong args!\n"RESET_COLOR,
+			12 + RED_STR_LEN + RESET_COLOR_STR_LEN);
 		(void) written;
 		return (EXIT_FAILURE);
 	}
 	init_mutexs(&table);
 	pthread_mutex_lock(&table.created);
 	create_table(&table, argc, argv);
+	if (table.philos_amount < 0)
+		return (printwtf());
 	gettimeofday(&table.start_time, NULL);
 	if (!table.finished && table.philos)
 		printf("\n");

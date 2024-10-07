@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 17:47:34 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/04 22:02:33 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ void	*create_table(t_table *table, int argc, char **argv)
 	table->finished = table->philos_amount <= 0;
 	if (table->finished || !create_philos(table, colors))
 		return (table->philos = NULL, NULL);
-	else
-		return (table->philos);
+	return (table->philos);
 }
 
 void	*philo_live_routine(void *param)
@@ -72,14 +71,14 @@ void	*philo_live_routine(void *param)
 	int		(*functs[VITALS_AMOUNT])(t_philo *);
 	int		i;
 
-	functs[0] = p_eat;
-	functs[1] = p_sleep;
-	functs[2] = p_think;
+	functs[0] = p_think;
+	functs[1] = p_eat;
+	functs[2] = p_sleep;
 	finished = 0;
 	philo = (t_philo *) param;
 	pthread_mutex_lock(&(philo->table->created));
 	pthread_mutex_unlock(&(philo->table->created));
-	i = philo->index % 2 == 0;
+	i = (philo->index % 2 == 0) * 2;
 	while (!finished)
 	{
 		if (!functs[i](philo))

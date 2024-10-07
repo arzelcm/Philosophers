@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 15:01:31 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:33:05 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	hold_fork(t_philo *philo, pthread_mutex_t *fork)
 
 int	hold_forks(t_philo *philo)
 {
-	if (!hold_fork(philo, &philo->prev->fork))
+	if (!hold_fork(philo, &philo->fork))
 		return (1);
-	else if (&philo->prev->fork == &philo->fork)
+	else if (&philo->next->fork == &philo->fork)
 		return (suspend(philo->table->time_death, philo->table), 1);
-	hold_fork(philo, &philo->fork);
+	hold_fork(philo, &philo->next->fork);
 	return (2);
 }
 

@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 18:53:04 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:12:29 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*create_table(t_table *table, int argc, char **argv)
 	table->time_death = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
-	table->times_eat = 0;
+	table->times_eat = -1;
 	if (argc > 5)
 		table->times_eat = ft_atoi(argv[5]);
 	if (!table_params_correct(table, argc))

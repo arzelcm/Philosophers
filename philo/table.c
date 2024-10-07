@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/04 22:02:33 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 11:58:47 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_philo	*create_philos(t_table *table, char	**colors)
 	i = -1;
 	while (++i < table->philos_amount)
 	{
-		gettimeofday(&table->philos[i].last_eat, NULL);
+		table->philos[i].last_eat = table->start_time;
 		if (i + 1 < table->philos_amount)
 		{
 			table->philos[i].next = table->philos + i + 1;

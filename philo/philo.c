@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/05 13:31:32 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:04:06 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,20 @@ static int	printwtf()
 {
 	int	written;
 
-	written = write(STDERR_FILENO, PINK"Whaat ?\n"RESET_COLOR,
+	written = write(STDERR_FILENO, PINK"Whaat ?!\n"RESET_COLOR,
 		PINK_STR_LEN + 9 + RESET_COLOR_STR_LEN);
 	(void) written;
 	return (EXIT_FAILURE);
+}
+
+void	set_starting_time(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	gettimeofday(&table->start_time, NULL);
+	while (i < table->philos_amount)
+		table->philos[i++].last_eat = table->start_time;
 }
 
 int	main(int argc, char **argv)
@@ -78,9 +88,9 @@ int	main(int argc, char **argv)
 	create_table(&table, argc, argv);
 	if (table.philos_amount < 0)
 		return (printwtf());
-	gettimeofday(&table.start_time, NULL);
 	if (!table.finished && table.philos)
 		printf("\n");
+	set_starting_time(&table);
 	pthread_mutex_unlock(&table.created);
 	if (!table.philos)
 		return (free(table.philos), EXIT_FAILURE);

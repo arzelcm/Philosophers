@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:13:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 18:31:06 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:05:48 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	p_eat(t_philo *philo)
 	if (holded_forks >= 1)
 		pthread_mutex_unlock(&philo->fork);
 	if (holded_forks == 2)
-		pthread_mutex_unlock(&philo->prev->fork);
+		pthread_mutex_unlock(&philo->next->fork);
 	return (1);
 }
 

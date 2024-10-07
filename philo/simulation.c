@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/04 22:07:35 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:53:25 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	monitor_finish(t_table *table, int *i, int *philos_finished)
 			finished = get_time_now(table->philos[*i].last_eat)
 				>= table->time_death;
 			*philos_finished += table->philos[*i].eaten_times
-				== table->times_eat;
+				>= table->times_eat;
 			pthread_mutex_unlock(&(table->philos[*i].mutex));
 			(*i)++;
 		}

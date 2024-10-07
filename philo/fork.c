@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/03 17:52:40 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:49:11 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ int	hold_forks(t_philo *philo)
 
 	forks[0] = &philo->prev->fork;
 	forks[1] = &philo->fork;
-	if (philo->index % 2 != 0)
-	{
-		forks[0] = &philo->fork;
-		forks[1] = &philo->prev->fork;
-	}
 	if (!hold_fork(philo, forks[0]))
 		return (1);
 	else if (forks[0] == forks[1])

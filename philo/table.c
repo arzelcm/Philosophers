@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 17:57:46 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 11:58:47 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:53:04 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_atoi.h"
 #include "simulation.h"
 #include "vitals.h"
+#include "utils.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -58,6 +59,8 @@ void	*create_table(t_table *table, int argc, char **argv)
 	table->times_eat = 0;
 	if (argc > 5)
 		table->times_eat = ft_atoi(argv[5]);
+	if (!table_params_correct(table, argc))
+		return (printwtf(), NULL);
 	table->finished = table->philos_amount <= 0;
 	if (table->finished || !create_philos(table, colors))
 		return (table->philos = NULL, NULL);
@@ -89,4 +92,11 @@ void	*philo_live_routine(void *param)
 			i = 0;
 	}
 	return (NULL);
+}
+
+int	table_params_correct(t_table *table, int argc)
+{
+	return (table->philos_amount > 0 && table->time_death > 0
+		&& table->time_eat > 0 && table->time_sleep > 0
+		&& ((argc == 6 && table->times_eat > 0) || argc < 6));
 }

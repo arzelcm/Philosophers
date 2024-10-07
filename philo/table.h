@@ -6,7 +6,7 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 19:45:15 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/02 13:12:17 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:32:47 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ typedef struct s_table
 }	t_table;
 
 void	*create_table(t_table *table, int argc, char **argv);
+
+int		table_params_correct(t_table *table, int argc);
 
 #endif

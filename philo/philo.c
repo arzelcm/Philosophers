@@ -6,14 +6,13 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 13:46:47 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 15:06:44 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:51:48 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_atoi.h"
 #include "vitals.h"
 #include "simulation.h"
-#include "utils.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -76,9 +75,8 @@ int	main(int argc, char **argv)
 	}
 	init_mutexs(&table);
 	pthread_mutex_lock(&table.created);
-	create_table(&table, argc, argv);
-	if (table.philos_amount < 0)
-		return (printwtf());
+	if (!create_table(&table, argc, argv))
+		return (EXIT_FAILURE);
 	if (!table.finished && table.philos)
 		printf("\n");
 	set_starting_time(&table);

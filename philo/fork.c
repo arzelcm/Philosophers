@@ -6,14 +6,12 @@
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:28:31 by arcanava          #+#    #+#             */
-/*   Updated: 2024/10/07 15:33:05 by arcanava         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:51:12 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
 #include "vitals.h"
 #include "simulation.h"
-
 #include "utils.h"
 
 static int	hold_fork(t_philo *philo, pthread_mutex_t *fork)
